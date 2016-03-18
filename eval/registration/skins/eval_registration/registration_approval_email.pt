@@ -1,0 +1,18 @@
+<tal:root define="portal nocall:options/portal;
+                  dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;; charset=%s' % options['charset']);
+                  reset nocall:options/reset;
+                  user options/user;"
+>From: "<tal:r replace="portal/email_from_name"/>" <tal:r replace="structure string:<${portal/email_from_address}>"/>
+To: "<tal:r replace="user/fullname"/>" <tal:r replace="structure string:<${user/email}>"/>
+Subject: Registration at <tal:r replace="portal/title"/> Approved
+Precedence: bulk
+
+Hi, <tal:r replace="user/fullname"/>
+
+Your registration has been approved.
+Your username is '<tal:r replace="user/username"/>' 
+and you may login after setting your password here:
+
+<tal:r replace="python:here.pwreset_constructURL(reset['randomstring'])"/>.
+
+</tal:root>

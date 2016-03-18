@@ -1,0 +1,18 @@
+<tal:root define="portal nocall:options/portal;
+                  dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;; charset=%s' % options['charset']);
+                  user options/user;"
+>From: "<tal:r replace="portal/email_from_name"/>" <tal:r replace="structure string:<${portal/email_from_address}>"/>
+To: "<tal:r replace="user/fullname"/>" <tal:r replace="structure string:<${user/email}>"/>
+Subject: Registration at <tal:r replace="portal/title"/>
+Precedence: bulk
+
+Hi, <tal:r replace="user/fullname"/>
+
+Thank you for registering.
+
+Your registration is now pending approval by facilitators.
+Within a day or two, you will receive another email
+with instructions to set your password and be able to login
+as a member.
+
+</tal:root>

@@ -1,0 +1,15 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master">
+<head>
+</head>
+<body>
+    <div metal:fill-slot="main">
+<p>Thank you for registering.</p>
+<p>Your registration details have been submitted. You will also receive an email confirmation.</p>
+<p>A facilitator will review and approve your registration request. Upon approval a follow email up with details on how to set your password and login will be sent. </p>
+  </div>
+</body>
+</html>
+

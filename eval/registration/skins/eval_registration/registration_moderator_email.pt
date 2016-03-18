@@ -1,0 +1,21 @@
+<tal:root define="portal nocall:options/portal;
+                  dummy python:request.RESPONSE.setHeader('Content-Type', 'text/plain;; charset=%s' % options['charset']);
+                  user options/user;"
+>From: "<tal:r replace="portal/email_from_name"/>" <tal:r replace="structure string:<${portal/email_from_address}>"/>
+To: <tal:r replace="structure options/moderator"/>
+Subject: Registration at <tal:r replace="portal/title"/>
+Precedence: bulk
+
+A new member <tal:r replace="user/fullname"/> has registered and is awaiting approval.
+
+If it is a valid member, please visit the link below and approve the member:
+
+<tal:r replace="string:${portal/absolute_url}/portal_registration_approval"/>
+
+The new member will get an email confirmation to set their initial password upon
+approval.
+
+--
+
+This is an automated system message, please do not reply.
+</tal:root>
