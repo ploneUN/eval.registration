@@ -15,11 +15,35 @@
 
     <include package=".behavior"/>
     <include package=".portlet"/>
+    
+    <include package=".browser"/>
+    <include package="plone.app.users"/>
+    <include package="plone.app.controlpanel" file="permissions.zcml"/>
+    <include package="quintagroup.formlib.captcha"/>
 
     <browser:resourceDirectory 
         name="eval.registration"
         directory="static"/>
+    
+    <cmf:registerDirectory
+      name="skins"
+      directory="skins"
+      recursive="True"
+      />
 
     <!-- -*- extra stuff goes here -*- -->
+    
+    <subscriber 
+        for=".interfaces.IUserRegisteredEvent"
+        handler=".mailnotification.handle_register" />
+
+    <subscriber 
+        for=".interfaces.IUserRegisteredEvent"
+        handler=".mailnotification.handle_notify_register" />
+
+ 
+    <subscriber 
+        for=".interfaces.IUserApprovedEvent"
+        handler=".mailnotification.handle_approve" />
 
 </configure>
