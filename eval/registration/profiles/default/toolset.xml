@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<tool-setup>
+ <required 
+     tool_id="eval_membership_registration_approval"
+     class="eval.registration.registration_approval.RegistrationApproval"/>
+</tool-setup>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    purge="False">
+
+    <configlet
+        title="Member Approval"
+        action_id="eval.registration:member_approval"
+        appId="eval.registration" 
+        category="Products"
+        condition_expr=""
+        url_expr="string:${portal_url}/eval_membership_registration_approval"
+        visible="True">
+            <permission>Plone Site Setup: Users and Groups</permission>
+    </configlet>
+
+</object>
