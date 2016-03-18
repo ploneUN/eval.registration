@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master">
+<head>
+</head>
+<body>
+   <div metal:fill-slot="content">
+      <h1>Pending Members</h1>
+      <form method="POST">
+      <table style="width:100%;">
+         <tr>
+            <th></th>
+            <th>Full name</th>
+            <th>Email</th>
+            <!--<th>Job Title</th>
+            <th>Organization</th>-->
+         </tr>
+         <tr tal:repeat="item view/items">
+            <td>
+               <input type="checkbox" 
+                     name="member:list"
+                     tal:attributes="value item/username"/>
+            </td>
+            <td tal:content="item/fullname"></td>
+            <td tal:content="item/email"></td>
+            <!--<td tal:content="item/kn_jobtitle"></td>
+            <td tal:content="item/kn_organization"></td>-->
+         </tr>
+      </table>
+      <tal:r replace="structure here/@@authenticator/authenticator"/>
+      <input type="submit" name="approve" value="Approve"/>
+      <input type="submit" name="reject" value="Reject"/>
+      </form>
+  </div>
+</body>
+</html>

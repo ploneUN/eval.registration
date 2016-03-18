@@ -1,0 +1,24 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+           xmlns:browser="http://namespaces.zope.org/browser">
+
+    <browser:page
+        class=".manage.ListPendingApproval"
+        name="index_html"
+        for="..interfaces.IRegistrationApproval"
+        template="list_pending_approval.pt"
+        permission="plone.app.controlpanel.UsersAndGroups"/>
+
+    <browser:defaultView
+        for="..interfaces.IRegistrationApproval"
+        name="index_html"/>
+
+    <browser:page
+        class=".register.RegisterForm"
+        name="register"
+        for="plone.app.layout.navigation.interfaces.INavigationRoot"
+        layer="..interfaces.IProductSpecific"
+        permission="zope2.View"/>
+
+
+</configure>
