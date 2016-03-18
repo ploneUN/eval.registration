@@ -34,6 +34,7 @@ setup(name='eval.registration',
           'plone.app.multilingual',
           'plone.multilingualbehavior',
           'plone.app.versioningbehavior',
+          'quintagroup.formlib.captcha',
           # -*- Extra requirements: -*-
       ],
       extras_require={
