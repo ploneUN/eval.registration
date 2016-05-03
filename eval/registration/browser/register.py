@@ -16,6 +16,18 @@ from eval.registration.interfaces import IExtendRegistrationForm, ExtendRegistra
 from zope.interface import implements
 from quintagroup.formlib.captcha import CaptchaWidget
 
+from zope.component import getUtility, getAdapter
+from zope.component.hooks import getSite
+from zope.globalrequest import getRequest
+import logging
+from plone.app.users.userdataschema import IUserDataSchemaProvider
+from eval.registration.events import (
+    UserApprovedEvent, UserRegisteredEvent,
+    UserRejectedEvent
+)
+from zope.schema import getFieldNamesInOrder
+from zope.event import notify
+
 class RegisterForm(RegistrationForm):
     implements(IExtendRegistrationForm)
     template = ViewPageTemplateFile('register_form.pt')
@@ -92,14 +104,56 @@ class RegisterForm(RegistrationForm):
             data['username'] = data['email']
         else:
             username = self.widgets['username'].getInputValue()
-
-        ratool = getToolByName(self.context, 'eval_membership_registration_approval')
-
-        ratool.add(username, data)
+        if data['email'].endswith('ilo.org'):
+            self.approve(data, self.request)
+        else:
+            ratool = getToolByName(self.context, 'eval_membership_registration_approval')
+    
+            ratool.add(username, data)
 
     @form.action(u'Register',
                  validator='validate_registration', name=u'register')
     def action_join(self, action, data):
         self.handle_join_success(data)
-        return self.request.response.redirect(getSite().absolute_url() +
+        
+        if data.has_key('email'):
+            if data['email'].endswith('ilo.org'):
+                return self.request.response.redirect(getSite().absolute_url() +
+                '/registration_successful')
+                
+            else:
+                return self.request.response.redirect(getSite().absolute_url() +
                 '/registration_success')
+    
+    def approve(self, data, request):
+        portal = getSite()
+        
+        registration = getToolByName(self, 'portal_registration')
+        portal_props = getToolByName(self, 'portal_properties')
+        mt = getToolByName(self, 'portal_membership')
+        props = portal_props.site_properties
+        use_email_as_login = props.getProperty('use_email_as_login')
+        
+        if use_email_as_login:
+            data['username'] = data['email']
+        user_id = data['username']
+        password = registration.generatePassword()
+        try:
+            registration.addMember(user_id, password, REQUEST=request)
+            
+        except (AttributeError, ValueError), err:
+            logging.exception(err)
+            IStatusMessage(request).addStatusMessage(err, type="error")
+            return
+        
+        # set additional properties using the user schema adapter
+        schema = getUtility(IUserDataSchemaProvider).getSchema()
+        
+        adapter = getAdapter(portal, schema)
+        adapter.context = mt.getMemberById(user_id)
+        
+        for name in getFieldNamesInOrder(schema):
+            if name in data:
+                setattr(adapter, name, data[name])
+
+        notify(UserApprovedEvent(data)) 
