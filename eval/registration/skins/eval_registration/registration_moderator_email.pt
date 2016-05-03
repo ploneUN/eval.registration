@@ -10,7 +10,7 @@ A new member <tal:r replace="user/fullname"/> has registered and is awaiting app
 
 If it is a valid member, please visit the link below and approve the member:
 
-<tal:r replace="string:${portal/absolute_url}/portal_registration_approval"/>
+<tal:r replace="string:${portal/absolute_url}/eval_membership_registration_approval"/>
 
 The new member will get an email confirmation to set their initial password upon
 approval.
